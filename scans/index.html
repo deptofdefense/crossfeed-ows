@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>Crossfeed | Crossfeed</title>
+<title>Scanning FAQ | Crossfeed</title>
 
 
 
@@ -131,7 +131,7 @@
           
           <li class="usa-nav__primary-item">
             
-              <a class=" usa-nav__link  " href="/scans/">
+              <a class=" usa-nav__link   usa-current" href="/scans/">
                 <span>Scanning FAQ</span>
               </a>
             
@@ -178,42 +178,37 @@
     
 
     
-      <main id="main-content" class="usa-section">
-        <div class="grid-container">
-  <h1 id="crossfeed-documentation">Crossfeed Documentation</h1>
+      <main id="main-content" class="usa-layout-docs usa-layout-docs__main desktop:grid-col-9 usa-prose">
+        <div class="usa-section">
+  <div class="grid-container">
+    <div class="grid-row grid-gap flex-align-start">
+      
+      
 
-<p>Crossfeed is a tool that continuously enumerates and monitors an organization’s public-facing attack surface in order to discover assets and flag potential security flaws. By operating in either passive or active scanning modes, Crossfeed collects data from a variety of open source tools and data feeds to provide actionable information about organization assets. Crossfeed is offered as a self-service portal and allows customers to view reports and customize scans performed.</p>
+      <main class="usa-layout-docs usa-layout-docs__main usa-prose" id="main-content">
+        
+          <h1>Scanning FAQ</h1>
+        
+        <h3 id="what-is-crossfeed">What is Crossfeed?</h3>
 
-<p>Crossfeed is a collaboration between the <a href="https://www.cisa.gov/">Cybersecurity and Infrastructure Security Agency</a> and the <a href="https://dds.mil/">Defense Digital Service</a>.</p>
+<p>Crossfeed is an asset discovery tool that can be used to monitor and gather information about vulnerabilities on public-facing websites. Crossfeed is developed as an open-source tool, and its code is available on GitHub <a href="https://github.com/cisagov/crossfeed">here</a>.</p>
 
-<h2 id="getting-started">Getting Started</h2>
+<h3 id="how-can-i-verify-that-traffic-is-coming-from-cisas-instance-of-crossfeed">How can I verify that traffic is coming from CISA’s instance of Crossfeed?</h3>
 
-<ul>
-  <li>
-    <p>If you want to learn how to use Crossfeed, see the <a href="./usage/">User Guide</a>.</p>
-  </li>
-  <li>
-    <p>If you interested in developing with Crossfeed or setting up an instance for your own organization, see <a href="./contributing/">Contributing</a>).</p>
-  </li>
-</ul>
+<p>All requests sent from CISA’s instance of Crossfeed (except for requests to third-party APIs) are sent with the following User-Agent:</p>
 
-<h2 id="source-code">Source code</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Mozilla/5.0 (compatible; Crossfeed/1.0; +https://docs.crossfeed.cyber.dhs.gov/scans/)
+</code></pre></div></div>
 
-<p>The source code for Crossfeed is available at <a href="https://github.com/cisagov/crossfeed">https://github.com/cisagov/crossfeed</a>.</p>
+<p>All requests are also signed in order to allow verification that the request was actually sent from CISA Crossfeed. To verify a request, please note down the request URL, “Date” header and the “Signature” header, and send them to <a href="mailto:support@crossfeed.cyber.dhs.gov">support@crossfeed.cyber.dhs.gov</a>.</p>
 
-<h2 id="public-domain">Public domain</h2>
+<h3 id="who-can-i-contact-with-further-questions">Who can I contact with further questions?</h3>
 
-<p>This project is in the worldwide <a href="https://github.com/cisagov/crossfeed/blob/master/LICENSE">public domain</a>.</p>
+<p>Please contact <a href="mailto:support@crossfeed.cyber.dhs.gov">support@crossfeed.cyber.dhs.gov</a>.</p>
 
-<p>This project is in the public domain within the United States, and
-copyright and related rights in the work worldwide are waived through
-the <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal public domain
-dedication</a>.</p>
-
-<p>All contributions to this project will be released under the CC0
-dedication. By submitting a pull request, you are agreeing to comply
-with this waiver of copyright interest.</p>
-
+      </main>
+    </div>
+  </div>
 </div>
 
       </main>

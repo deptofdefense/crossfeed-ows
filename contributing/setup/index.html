@@ -20,7 +20,7 @@
 
 
 <link rel="stylesheet"
-  href="/crossfeed/assets/css/uswds-theme.css"
+  href="/assets/css/uswds-theme.css"
   media="screen">
 
 
@@ -31,6 +31,51 @@
     <a class="usa-skipnav" href="#main-content">Skip to main content</a>
 
     
+
+
+  <section class="usa-banner" aria-label="Official government website">
+  <div class="usa-accordion">
+    <header class="usa-banner__header">
+      <div class="usa-banner__inner">
+        <div class="grid-col-auto">
+          <img class="usa-banner__header-flag" src="/assets/uswds/img/us_flag_small.png" alt="U.S. flag">
+        </div>
+        <div class="grid-col-fill tablet:grid-col-auto">
+          <p class="usa-banner__header-text">An official website of the United States government</p>
+          <p class="usa-banner__header-action" aria-hidden="true">Here’s how you know</p>
+        </div>
+        <button class="usa-accordion__button usa-banner__button"
+          aria-expanded="false" aria-controls="gov-banner">
+          <span class="usa-banner__button-text">Here’s how you know</span>
+        </button>
+      </div>
+    </header>
+    <div class="usa-banner__content usa-accordion__content" id="gov-banner">
+      <div class="grid-row grid-gap-lg">
+        <div class="usa-banner__guidance tablet:grid-col-6">
+          <img class="usa-banner__icon usa-media-block__img" src="/assets/uswds/img/icon-dot-gov.svg" alt="Dot gov">
+          <div class="usa-media-block__body">
+            <p>
+              <strong>The .gov means it’s official.</strong>
+              <br>
+              Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure you’re on a federal government site.
+            </p>
+          </div>
+        </div>
+        <div class="usa-banner__guidance tablet:grid-col-6">
+          <img class="usa-banner__icon usa-media-block__img" src="/assets/uswds/img/icon-https.svg" alt="Https">
+          <div class="usa-media-block__body">
+            <p>
+              <strong>The site is secure.</strong>
+              <br>
+              The <strong>https://</strong> ensures that you are connecting to the official website and that any information you provide is encrypted and transmitted securely.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 
@@ -46,7 +91,7 @@
     <div class="usa-navbar">
       <div class="usa-logo" id="header-logo">
         <a
-          href="/crossfeed/"
+          href="/"
           title="Home">
           
           <em class="usa-logo__text">
@@ -60,7 +105,7 @@
     <nav role="navigation" class="usa-nav">
       <div class="usa-nav__inner">
         <button class="usa-nav__close">
-          <img src="/crossfeed/assets/uswds/img/close.svg" alt="close">
+          <img src="/assets/uswds/img/close.svg" alt="close">
         </button>
 
         
@@ -70,7 +115,7 @@
           
           <li class="usa-nav__primary-item">
             
-              <a class=" usa-nav__link  " href="/crossfeed/usage/">
+              <a class=" usa-nav__link  " href="/usage/">
                 <span>User Guide</span>
               </a>
             
@@ -78,8 +123,16 @@
           
           <li class="usa-nav__primary-item">
             
-              <a class=" usa-nav__link  " href="/crossfeed/contributing/">
+              <a class=" usa-nav__link  " href="/contributing/">
                 <span>Contributing</span>
+              </a>
+            
+          </li>
+          
+          <li class="usa-nav__primary-item">
+            
+              <a class=" usa-nav__link  " href="/scans/">
+                <span>Scanning FAQ</span>
               </a>
             
           </li>
@@ -138,7 +191,7 @@
       
       
     <li class="usa-sidenav__item">
-      <a href="/crossfeed/contributing/"
+      <a href="/contributing/"
          
           >
          Contribution Guidelines
@@ -150,7 +203,7 @@
       
       
     <li class="usa-sidenav__item">
-      <a href="/crossfeed/contributing/setup/"
+      <a href="/contributing/setup/"
           class="usa-current" 
           >
          Development Setup
@@ -179,7 +232,7 @@
       
       
     <li class="usa-sidenav__item">
-      <a href="/crossfeed/contributing/architecture/"
+      <a href="/contributing/architecture/"
          
           >
          Architecture
@@ -191,7 +244,7 @@
       
       
     <li class="usa-sidenav__item">
-      <a href="/crossfeed/contributing/deployment/"
+      <a href="/contributing/deployment/"
          
           >
          Deployment
@@ -227,7 +280,9 @@
       <li><code class="language-plaintext highlighter-rouge">docker-compose up --build</code></li>
     </ul>
   </li>
-  <li>Generate DB schema:
+  <li>
+    <p>Generate DB schema:</p>
+
     <ul>
       <li><code class="language-plaintext highlighter-rouge">cd backend &amp;&amp; npm run syncdb</code></li>
       <li>(run <code class="language-plaintext highlighter-rouge">npm run syncdb -- -d dangerouslyforce</code> to drop and recreate)</li>
@@ -246,13 +301,15 @@
   <li>Install <a href="https://www.robinwieruch.de/how-to-use-prettier-vscode">Prettier</a> in your dev environment to format code on save.</li>
 </ol>
 
+<p>If you want to view a local version of Kibana, you should first comment out the “kib” section of <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> and then navigate to <a href="http://localhost:5601">http://localhost:5601</a>.</p>
+
 <h3 id="running-the-scheduler-lambda-function-locally">Running the scheduler lambda function locally</h3>
 
-<p>The scheduler lambda function is set to run on an interval or in response to non-http events. To run it manually, run the following command:</p>
+<p>The scheduler lambda function is set to run on a 5-minute interval when deployed.</p>
 
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">cd backend &amp;&amp; npm run scheduler</code></li>
-</ul>
+<p>When running locally, the scheduler function runs every 1 minute, for convenience. To run it manually, click on the “Manually run scheduler” button on the Scans page.</p>
+
+<p>You can check scheduler logs locally by checking the backend container logs.</p>
 
 <h3 id="running-tests">Running tests</h3>
 
@@ -268,6 +325,12 @@ npm <span class="nb">test</span>
 
 <p>You can then view a HTML coverage report in the <code class="language-plaintext highlighter-rouge">coverage/lcov-report</code> directory.</p>
 
+<p>To run Python tests for some worker code, you need to run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">-r</span> worker/requirements.txt
+pytest
+</code></pre></div></div>
+
 <h2 id="fargate-worker">Fargate worker</h2>
 
 <p>In order to run scans locally or work on scanning infrastructure,
@@ -281,10 +344,7 @@ when worker code changes.</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run build-worker
 </code></pre></div></div>
 
-<p>To run the scheduler:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose <span class="nb">exec </span>scheduler npx serverless invoke <span class="nb">local</span> <span class="nt">-f</span> scheduler
-</code></pre></div></div>
+<p>To run the scheduler, click on “Manually run scheduler” on the Scans page.</p>
 
 <p>You can then run <code class="language-plaintext highlighter-rouge">docker ps</code> or ( <code class="language-plaintext highlighter-rouge">docker ps -a | head -n 3</code> ) to view running / stopped Docker containers,
 and check their logs with <code class="language-plaintext highlighter-rouge">docker logs [containername]</code> .</p>
@@ -307,7 +367,7 @@ and check their logs with <code class="language-plaintext highlighter-rouge">doc
 
 <h2 id="documentation">Documentation</h2>
 
-<p>The documentation files are stored in the <code class="language-plaintext highlighter-rouge">docs</code> directory and served from a Jekyll site. To work on this, you can run:</p>
+<p>The documentation files are stored in the <code class="language-plaintext highlighter-rouge">docs</code> directory and served from a Jekyll site. To work on this, you should first comment out the “docs” section of <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> and then run:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up docs
 </code></pre></div></div>
@@ -358,7 +418,7 @@ and check their logs with <code class="language-plaintext highlighter-rouge">doc
 
   
     
-      <script src="/crossfeed/assets/uswds/js/uswds.min.js" async></script>
+      <script src="/assets/uswds/js/uswds.min.js" async></script>
     
 
   

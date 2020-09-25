@@ -20,7 +20,7 @@
 
 
 <link rel="stylesheet"
-  href="/crossfeed/assets/css/uswds-theme.css"
+  href="/assets/css/uswds-theme.css"
   media="screen">
 
 
@@ -31,6 +31,51 @@
     <a class="usa-skipnav" href="#main-content">Skip to main content</a>
 
     
+
+
+  <section class="usa-banner" aria-label="Official government website">
+  <div class="usa-accordion">
+    <header class="usa-banner__header">
+      <div class="usa-banner__inner">
+        <div class="grid-col-auto">
+          <img class="usa-banner__header-flag" src="/assets/uswds/img/us_flag_small.png" alt="U.S. flag">
+        </div>
+        <div class="grid-col-fill tablet:grid-col-auto">
+          <p class="usa-banner__header-text">An official website of the United States government</p>
+          <p class="usa-banner__header-action" aria-hidden="true">Here’s how you know</p>
+        </div>
+        <button class="usa-accordion__button usa-banner__button"
+          aria-expanded="false" aria-controls="gov-banner">
+          <span class="usa-banner__button-text">Here’s how you know</span>
+        </button>
+      </div>
+    </header>
+    <div class="usa-banner__content usa-accordion__content" id="gov-banner">
+      <div class="grid-row grid-gap-lg">
+        <div class="usa-banner__guidance tablet:grid-col-6">
+          <img class="usa-banner__icon usa-media-block__img" src="/assets/uswds/img/icon-dot-gov.svg" alt="Dot gov">
+          <div class="usa-media-block__body">
+            <p>
+              <strong>The .gov means it’s official.</strong>
+              <br>
+              Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure you’re on a federal government site.
+            </p>
+          </div>
+        </div>
+        <div class="usa-banner__guidance tablet:grid-col-6">
+          <img class="usa-banner__icon usa-media-block__img" src="/assets/uswds/img/icon-https.svg" alt="Https">
+          <div class="usa-media-block__body">
+            <p>
+              <strong>The site is secure.</strong>
+              <br>
+              The <strong>https://</strong> ensures that you are connecting to the official website and that any information you provide is encrypted and transmitted securely.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 
@@ -46,7 +91,7 @@
     <div class="usa-navbar">
       <div class="usa-logo" id="header-logo">
         <a
-          href="/crossfeed/"
+          href="/"
           title="Home">
           
           <em class="usa-logo__text">
@@ -60,7 +105,7 @@
     <nav role="navigation" class="usa-nav">
       <div class="usa-nav__inner">
         <button class="usa-nav__close">
-          <img src="/crossfeed/assets/uswds/img/close.svg" alt="close">
+          <img src="/assets/uswds/img/close.svg" alt="close">
         </button>
 
         
@@ -70,7 +115,7 @@
           
           <li class="usa-nav__primary-item">
             
-              <a class=" usa-nav__link  " href="/crossfeed/usage/">
+              <a class=" usa-nav__link  " href="/usage/">
                 <span>User Guide</span>
               </a>
             
@@ -78,8 +123,16 @@
           
           <li class="usa-nav__primary-item">
             
-              <a class=" usa-nav__link  " href="/crossfeed/contributing/">
+              <a class=" usa-nav__link  " href="/contributing/">
                 <span>Contributing</span>
+              </a>
+            
+          </li>
+          
+          <li class="usa-nav__primary-item">
+            
+              <a class=" usa-nav__link  " href="/scans/">
+                <span>Scanning FAQ</span>
               </a>
             
           </li>
@@ -138,7 +191,7 @@
       
       
     <li class="usa-sidenav__item">
-      <a href="/crossfeed/contributing/"
+      <a href="/contributing/"
          
           >
          Contribution Guidelines
@@ -150,7 +203,7 @@
       
       
     <li class="usa-sidenav__item">
-      <a href="/crossfeed/contributing/setup/"
+      <a href="/contributing/setup/"
          
           >
          Development Setup
@@ -162,7 +215,7 @@
       
       
     <li class="usa-sidenav__item">
-      <a href="/crossfeed/contributing/architecture/"
+      <a href="/contributing/architecture/"
           class="usa-current" 
           >
          Architecture
@@ -187,7 +240,7 @@
       
       
     <li class="usa-sidenav__item">
-      <a href="/crossfeed/contributing/deployment/"
+      <a href="/contributing/deployment/"
          
           >
          Deployment
@@ -325,7 +378,7 @@ and errors, if any, of that particular task.</p>
 
   
     
-      <script src="/crossfeed/assets/uswds/js/uswds.min.js" async></script>
+      <script src="/assets/uswds/js/uswds.min.js" async></script>
     
 
   
