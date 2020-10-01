@@ -283,6 +283,10 @@ npx sls create_domain <span class="nt">--stage</span><span class="o">=</span>sta
 npx sls deploy <span class="nt">--stage</span><span class="o">=</span>staging
 </code></pre></div></div>
 
+<p>To change the environment variables used to build the backend, edit <code class="language-plaintext highlighter-rouge">env.yaml</code>. Most of these
+variables are set through SSM variables (which should be set manually / through Terraform – see below),
+but some of these variables are hard-coded and configurable by just editing <code class="language-plaintext highlighter-rouge">env.yaml</code>.</p>
+
 <h3 id="worker">Worker</h3>
 
 <p>Deploying the worker involves building the Docker image and pushing it to ECR:</p>
@@ -296,10 +300,14 @@ npm run deploy-worker
 <p>Deploying the frontend involves building the React code, uploading it to an S3 bucket, then invalidating the Cloudfront cache:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>frontend
-<span class="nv">REACT_APP_API_URL</span><span class="o">=</span>https://api.staging.crossfeed.cyber.dhs.gov npm run build
+<span class="nb">cp </span>stage.env .env
+npm run build
 aws s3 <span class="nb">sync </span>build/ s3://staging.crossfeed.cyber.dhs.gov/ <span class="nt">--delete</span>
 aws cloudfront create-invalidation <span class="nt">--distribution-id</span> ELM2YU1N4NV9M <span class="nt">--paths</span> <span class="s2">"/index.html"</span>
 </code></pre></div></div>
+
+<p>You may need to change the values in <code class="language-plaintext highlighter-rouge">stage.env</code> or <code class="language-plaintext highlighter-rouge">prod.env</code> if you need to change the environment variables
+that are used to build the frontend.</p>
 
 <h2 id="first-time-setup">First-time Setup</h2>
 
@@ -338,10 +346,20 @@ pem-jwk private.pem <span class="o">&gt;</span> private.jwk
   <li><code class="language-plaintext highlighter-rouge">/crossfeed/staging/LOGIN_GOV_BASE_URL</code></li>
   <li><code class="language-plaintext highlighter-rouge">/crossfeed/staging/LOGIN_GOV_JWT_KEY</code></li>
   <li><code class="language-plaintext highlighter-rouge">/crossfeed/staging/LOGIN_GOV_ISSUER</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/crossfeed/staging/WORKER_USER_AGENT</code></li>
   <li><code class="language-plaintext highlighter-rouge">/crossfeed/staging/WORKER_SIGNATURE_PUBLIC_KEY</code></li>
   <li><code class="language-plaintext highlighter-rouge">/crossfeed/staging/WORKER_SIGNATURE_PRIVATE_KEY</code></li>
   <li><code class="language-plaintext highlighter-rouge">/crossfeed/staging/REACT_APP_TERMS_VERSION</code></li>
 </ul>
+
+<h3 id="create-service-linked-role-for-amazon-es">Create service-linked role for Amazon ES</h3>
+
+<p>You must also <a href="https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/slr-es.html#create-slr">create a service-linked role for Amazon ES</a> (this only needs to be created once per AWS account):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws iam create-service-linked-role <span class="nt">--aws-service-name</span> es.amazonaws.com
+</code></pre></div></div>
+
+<h3 id="use-terraform">Use Terraform</h3>
 
 <p>Then, run <code class="language-plaintext highlighter-rouge">cp stage.config .env</code> and change the variables in <code class="language-plaintext highlighter-rouge">.env</code> to use a bucket you have access to to store state.</p>
 
@@ -351,6 +369,8 @@ pem-jwk private.pem <span class="o">&gt;</span> private.jwk
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm i <span class="nt">-g</span> dotenv-cli
 make init
+make plan
+make apply
 </code></pre></div></div>
 
 
