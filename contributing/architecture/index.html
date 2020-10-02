@@ -231,6 +231,10 @@
     <a href="#worker-architecture" >Worker architecture </a>
   </li>
 
+  <li>
+    <a href="#search-architecture" >Search architecture </a>
+  </li>
+
 
       </ul>
       
@@ -335,6 +339,74 @@ and errors, if any, of that particular task.</p>
 <h3 id="building-docker-images">Building Docker images</h3>
 
 <p>For more information on how to build and publish the Fargate Docker images, see <code class="language-plaintext highlighter-rouge">backend/README.md</code> .</p>
+
+<h2 id="search-architecture">Search architecture</h2>
+
+<p>We use an Elasticsearch cluster to power search. All data is populated to the database by other scans, and synchronization between the database and Elasticsearch is done by the <code class="language-plaintext highlighter-rouge">searchSync</code> scan.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">searchSync</code> scan retrieves all domains / services / vulnerabilities / webpages that need to be synced to Elasticsearch, then bulk
+uploads them to Elasticsearch. Afterwards, it sets the <code class="language-plaintext highlighter-rouge">syncedAt</code> column on these entities so that they will not be synced again in the future,
+until they are updated by other scans.</p>
+
+<h3 id="indexes-and-mapping">Indexes and mapping</h3>
+
+<p>We use a single index called “domains”; its name might change due to reindexing, so the current name is stored as the DOMAINS_INDEX constant in <a href="https://github.com/cisagov/crossfeed/blob/b55f36c0808feede82ffd8ad9473b2768e56a511/backend/src/tasks/es-client.ts#L4">es-client.ts</a>.</p>
+
+<p>The domain index has a mapping. In order to create or update the mapping, you can run <code class="language-plaintext highlighter-rouge">npm run syncdb</code> from the <code class="language-plaintext highlighter-rouge">backend</code> directory. This calls
+the <code class="language-plaintext highlighter-rouge">ESClient.syncDomainsIndex()</code>, which will update the index’s mapping if it exists, or create a new index if it doesn’t exist.</p>
+
+<p>Both <code class="language-plaintext highlighter-rouge">services</code> and <code class="language-plaintext highlighter-rouge">vulnerabilities</code> are stored with the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.9/nested.html">nested field type</a>. This means that they are all stored on the same domain
+document, and adding services / vulnerabilities will require updating / reindexing of an entire domain document.</p>
+
+<p>However, <code class="language-plaintext highlighter-rouge">webpages</code> are stored with the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.9/parent-join.html">join field type</a>. This means
+that each webpage is stored as a separate document in the “domains” index, but contains a value for the <code class="language-plaintext highlighter-rouge">parent_join</code> field that indicates that
+that webpage is a child of another domain document. This makes it more efficient to add or remove single webpages, since it doesn’t require
+reindexing all the webpages for a given domain.</p>
+
+<p>So that the webpage fields don’t conflict with fields in regular parent domain records, fields in webpage records are stored with the
+<code class="language-plaintext highlighter-rouge">webpage_</code> prefix
+(<a href="https://github.com/cisagov/crossfeed/blob/b55f36c0808feede82ffd8ad9473b2768e56a511/backend/src/tasks/es-client.ts#L11">see schema here</a>).</p>
+
+<h3 id="searching">Searching</h3>
+
+<p>The search query is built by the <a href="https://github.com/cisagov/crossfeed/blob/33fcaf4cb730974bf3d5ee61b80d13a2c675bd80/frontend/src/pages/Search/SearchProvider/buildRequest.js#L56">buildRequest</a> function on the frontend. As of now, the logic there roughly corresponds to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(
+  (
+    (has a domain matching query) OR
+    (has a webpage with body matching query)
+  )
+  AND (matches filters)
+)
+</code></pre></div></div>
+
+<p>Search results are individual domains, but they may contain snippets of webpage bodies if they contain the webpage content. For example:</p>
+
+<p><img src="https://github.com/cisagov/crossfeed/raw/68d7f20b0c2bc951d625d40a8a62c5b49f4306b2/docs/contributing/img/search%20result.png" alt="search result" /></p>
+
+<h2 id="webpage-scraping">Webpage scraping</h2>
+
+<p>Webpage scraping is done by the <code class="language-plaintext highlighter-rouge">webscraper</code> scan. This scan uses the <code class="language-plaintext highlighter-rouge">scrapy</code> Python library to follow and scrape all links, observing
+rate limits and respecting robots.txt as well.</p>
+
+<p>When a webpage is scraped, basic information such as the URL and status code are stored in the database through the <code class="language-plaintext highlighter-rouge">Webpage</code> model. However,
+webpage contents are not stored in the database; instead, they are uploaded to S3. The S3 directory is structured as follows
+(below is a local directory, which is then copied to S3):</p>
+
+<p><img src="https://github.com/cisagov/crossfeed/raw/cfcfba2cc736c39a5f241a64ce75428782062862/docs/contributing/img/webpage%20structure.png" alt="webpage structure" /></p>
+
+<p>Essentially, each webpage is stored in a folder with a name equal to a hash of its URL (this name is also stored in the <code class="language-plaintext highlighter-rouge">s3Key</code>
+attribute of the <code class="language-plaintext highlighter-rouge">Webpage</code> model). Inside this folder are folders with timestamps corresponding to each scan, as well as a <code class="language-plaintext highlighter-rouge">latest</code>
+folder for the information for the latest scan.</p>
+
+<p>In each subfolder, <code class="language-plaintext highlighter-rouge">body.txt</code> contains the response contents, while <code class="language-plaintext highlighter-rouge">item.json</code> contains basic metadata about the webpage
+(URL, status code). In the future, these subfolders will also store screenshots and other large information.</p>
+
+<p>When <code class="language-plaintext highlighter-rouge">searchSync</code> runs, for each webpage that needs to be synced, it reads from <code class="language-plaintext highlighter-rouge">latest/body.txt</code> and sets this to the contents of
+<code class="language-plaintext highlighter-rouge">webpage_body</code> in the object that is finally uploaded to Elasticsearch. This means that while Elasticsearch contains all webpage
+contents, it uses S3 as a source of truth for the webpage body but the database as a source of truth for the webpage paths /
+other info.</p>
 
 
       </main>
