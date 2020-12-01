@@ -1,0 +1,1 @@
+{"componentChunkName":"component---src-templates-blog-post-js","path":"/blog/a-new-blog-post","result":{"data":{"markdownRemark":{"html":"<h1>A Special Delivery</h1>\n<p>from Netlify CMS!</p>","frontmatter":{"author":"Dave","date":"February 19, 2020","title":"A New Blog Post"}}},"pageContext":{"name":"a-new-blog-post"}},"staticQueryHashes":["1824138477","561523179","63159454"]}
