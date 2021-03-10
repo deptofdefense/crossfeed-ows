@@ -91,11 +91,11 @@ No Modules.
 | ssm\_lambda\_subnet | n/a | `string` | `"/crossfeed/staging/SUBNET_ID"` | no |
 | ssm\_user\_pool\_client\_id | n/a | `string` | `"/crossfeed/staging/USER_POOL_CLIENT_ID"` | no |
 | ssm\_user\_pool\_id | n/a | `string` | `"/crossfeed/staging/USER_POOL_ID"` | no |
-| ssm\_worker\_arn | n/a | `string` | `""` | no |
-| ssm\_worker\_sg | n/a | `string` | `""` | no |
+| ssm\_worker\_arn | n/a | `string` | `"/crossfeed/staging/WORKER_CLUSTER_ARN"` | no |
+| ssm\_worker\_sg | n/a | `string` | `"/crossfeed/staging/WORKER_SG_ID"` | no |
 | ssm\_worker\_signature\_private\_key | n/a | `string` | `"/crossfeed/staging/WORKER_SIGNATURE_PRIVATE_KEY"` | no |
 | ssm\_worker\_signature\_public\_key | n/a | `string` | `"/crossfeed/staging/WORKER_SIGNATURE_PUBLIC_KEY"` | no |
-| ssm\_worker\_subnet | n/a | `string` | `""` | no |
+| ssm\_worker\_subnet | n/a | `string` | `"/crossfeed/staging/WORKER_SUBNET_ID"` | no |
 | stage | n/a | `string` | `"staging"` | no |
 | user\_pool\_domain | n/a | `string` | `"crossfeed-staging"` | no |
 | user\_pool\_name | n/a | `string` | `"crossfeed-staging"` | no |
